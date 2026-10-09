@@ -1,0 +1,558 @@
+/* ==========================================================================
+   What To Wear — Refined Hero Mockup & Realistic Card Deck Insertion Animation
+   ========================================================================== */
+
+:root {
+  --bg-gradient: linear-gradient(
+    180deg, 
+    rgba(247, 191, 100, 0.22) 0%, 
+    rgba(235, 97, 68, 0.20) 30%, 
+    rgba(201, 70, 114, 0.20) 60%, 
+    rgba(109, 71, 187, 0.20) 100%
+  );
+  --color-green-btn: #32D851;
+  --color-green-hover: #2cb945;
+  --color-text-title: #000000;
+  --color-text-sub: #475569;
+  --color-privacy-bg: rgba(255, 255, 255, 0.95);
+  --color-privacy-border: rgba(16, 185, 129, 0.3);
+  --color-privacy-text: #065F46;
+
+  --font-inter: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  
+  --device-radius: 20px;
+  --screen-radius: 14px;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #F1F5F9;
+  font-family: var(--font-inter);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Outer desktop centered wrapper */
+.canvas-container {
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  background-color: #e2e8f0;
+}
+
+/* The Exact 412x917 Canvas Container: snug fit, no empty gaps */
+.viewport-card {
+  position: relative;
+  width: 100%;
+  max-width: 420px;
+  height: 100vh;
+  height: 100dvh;
+  max-height: 917px;
+  background: var(--bg-gradient);
+  background-color: #FFFFFF;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 14px 16px;
+  overflow: hidden;
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.12);
+}
+
+@media (min-height: 860px) and (min-width: 450px) {
+  .viewport-card {
+    height: 917px;
+    border-radius: 28px;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+  }
+}
+
+/* ---------------- 1. UNIFIED TRUST BAR (Apple / Linear minimal style) ---------------- */
+.trust-bar-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 6px;
+  flex-shrink: 0;
+  z-index: 25;
+}
+
+.trust-bar {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  padding: 4px 12px;
+  border-radius: 9999px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #1E293B;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+  white-space: nowrap;
+}
+
+.shield-icon {
+  color: #10B981;
+  font-size: 0.82rem;
+}
+
+.android-icon {
+  color: #3DDC84;
+  font-size: 0.85rem;
+}
+
+.no-ads-icon {
+  color: #64748B;
+  font-size: 0.8rem;
+}
+
+.bar-separator {
+  color: #CBD5E1;
+  font-size: 0.65rem;
+}
+
+/* ---------------- 2. HEADER SECTION ---------------- */
+.header-section {
+  width: 100%;
+  text-align: center;
+  padding: 0 4px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  margin-bottom: 8px;
+  z-index: 20;
+}
+
+.header-title {
+  font-size: 1.2rem; /* Restored to 1.2rem across all resolutions */
+  font-weight: 700;
+  color: var(--color-text-title);
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  white-space: nowrap;
+}
+
+.header-subtitle {
+  font-size: 0.72rem; /* Sized to fit comfortably on 1 single line */
+  font-weight: 400;
+  color: var(--color-text-sub);
+  margin-top: 3px;
+  line-height: 1.25;
+  white-space: nowrap; /* Strictly single line to maintain design consistency */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+/* ---------------- 3. MOCKUP HERO STAGE: Dynamic Fill (No Empty Space) ---------------- */
+.mockup-section {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  position: relative;
+  perspective: 1000px;
+  min-height: 0;
+  padding: 4px 0;
+}
+
+.deck-wrapper {
+  position: relative;
+  height: 96%; /* Dynamically fills the space between header and branding */
+  max-height: 550px;
+  aspect-ratio: 284 / 573; /* Locks exact 284x573 Figma proportion perfectly */
+  cursor: pointer;
+  user-select: none;
+  touch-action: pan-y;
+  transform-style: preserve-3d;
+}
+
+/* Device Mockup Frame */
+.phone-mockup-card {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: var(--device-radius);
+  background: #000000;
+  border: 6px solid #000000;
+  box-shadow: 
+    0 16px 36px -8px rgba(0, 0, 0, 0.4),
+    0 0 0 1px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+  transition: transform 0.26s cubic-bezier(0.2, 0.9, 0.3, 1), 
+              opacity 0.22s ease, 
+              filter 0.22s ease,
+              box-shadow 0.22s ease;
+  transform-origin: center bottom;
+  backface-visibility: hidden;
+  will-change: transform, opacity;
+}
+
+/* Gloss Reflection overlay */
+.phone-mockup-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: calc(var(--device-radius) - 3px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  pointer-events: none;
+  z-index: 15;
+}
+
+/* Punch-hole camera */
+.camera-punch-hole {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 11px;
+  height: 11px;
+  background: #000000;
+  border: 2px solid #27272a;
+  border-radius: 50%;
+  z-index: 20;
+}
+.camera-punch-hole::after {
+  content: '';
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #1e293b;
+}
+
+/* Screen container */
+.screen-content {
+  width: 100%;
+  height: 100%;
+  border-radius: var(--screen-radius);
+  overflow: hidden;
+  background-color: #0F172A;
+  position: relative;
+}
+
+.screen-content img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  pointer-events: none;
+}
+
+/* 3D Stacking Layer States (Natural Card Deck Hierarchy) */
+.phone-mockup-card.stack-top {
+  transform: translate3d(0, 0, 0) scale(1);
+  opacity: 1;
+  filter: brightness(1);
+  z-index: 10;
+  box-shadow: 0 18px 40px -8px rgba(0, 0, 0, 0.45);
+}
+
+.phone-mockup-card.stack-second {
+  transform: translate3d(12px, -6px, -24px) scale(0.96);
+  opacity: 0.9;
+  filter: brightness(0.85);
+  z-index: 8;
+}
+
+.phone-mockup-card.stack-third {
+  transform: translate3d(-10px, -12px, -48px) scale(0.92);
+  opacity: 0.72;
+  filter: brightness(0.7);
+  z-index: 6;
+}
+
+.phone-mockup-card.stack-hidden {
+  transform: translate3d(0, -18px, -72px) scale(0.88);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* CRISP, FAST CARD DECK INSERTION (0.26s — snappy, zero blur, zero eye strain) */
+@keyframes slideToBackOfStack {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+    opacity: 1;
+    z-index: 12;
+  }
+  40% {
+    transform: translate3d(-38px, -3px, 6px) scale(0.98);
+    opacity: 0.96;
+    z-index: 12;
+  }
+  70% {
+    transform: translate3d(-16px, -10px, -40px) scale(0.93);
+    opacity: 0.75;
+    z-index: 3;
+  }
+  100% {
+    transform: translate3d(0, -18px, -72px) scale(0.88);
+    opacity: 0.5;
+    z-index: 1;
+  }
+}
+
+.phone-mockup-card.card-sliding-to-back {
+  animation: slideToBackOfStack 0.26s cubic-bezier(0.2, 0.85, 0.3, 1) forwards;
+  pointer-events: none;
+}
+
+/* ---------------- 4. BRANDING SECTION ---------------- */
+.brand-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 6px;
+  margin-bottom: 8px;
+  z-index: 10;
+}
+
+.brand-icon-box {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  margin-bottom: 3px;
+  overflow: hidden;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+}
+
+.brand-logo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.brand-name {
+  font-size: 1.15rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--color-text-title);
+  line-height: 1.15;
+}
+
+.brand-creator {
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: var(--color-text-sub);
+  margin-top: 1px;
+}
+
+.heart-symbol {
+  color: #EF4444;
+}
+
+/* ---------------- 5. CTA FOOTER SECTION ---------------- */
+.footer-section {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  z-index: 20;
+}
+
+/* High-Converting Polished CTA Button (High Contrast Deep WhatsApp Green) */
+.whatsapp-btn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 90%;
+  max-width: 360px;
+  height: 56px;
+  background: linear-gradient(135deg, #1fa843 0%, #168e37 100%);
+  border-radius: 9999px;
+  text-decoration: none;
+  box-shadow: 
+    0 8px 24px -2px rgba(22, 142, 55, 0.45),
+    inset 0 1px 1px rgba(255, 255, 255, 0.35);
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease;
+  padding: 0 12px 0 14px;
+  overflow: hidden;
+  gap: 8px;
+}
+
+.whatsapp-btn:hover {
+  background: linear-gradient(135deg, #22b84a 0%, #1a9c3d 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px -2px rgba(22, 142, 55, 0.58);
+}
+
+.whatsapp-btn:active {
+  transform: translateY(1px);
+}
+
+.btn-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  min-width: 0; /* Crucial for preventing overflow into adjacent flex items */
+}
+
+.btn-wa-icon {
+  font-size: 1.6rem;
+  color: #FFFFFF;
+  filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.35));
+  flex-shrink: 0;
+}
+
+.btn-text-group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.btn-label {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: #FFFFFF;
+  letter-spacing: -0.015em;
+  white-space: nowrap;
+  line-height: 1.2;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.btn-subtext {
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: #DCFCE7;
+  white-space: nowrap;
+  letter-spacing: -0.005em;
+  line-height: 1.2;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+}
+
+/* Value Anchor Badge (₹49 vs ₹199) - Always protected flex-shrink: 0 */
+.btn-pricing-badge {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  background: rgba(0, 0, 0, 0.32);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  padding: 4px 9px;
+  border-radius: 9999px;
+  flex-shrink: 0; /* Never allow to shrink or be overlapped */
+  z-index: 5;
+}
+
+.btn-old-price {
+  font-size: 0.68rem;
+  color: rgba(255, 255, 255, 0.65);
+  text-decoration: line-through;
+  display: inline-flex;
+  align-items: center;
+  font-weight: 600;
+}
+.btn-old-price i {
+  font-size: 0.6rem;
+}
+
+.btn-current-price {
+  font-size: 0.98rem;
+  font-weight: 800;
+  color: #FFFFFF;
+  display: inline-flex;
+  align-items: center;
+  letter-spacing: -0.02em;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+.btn-current-price i {
+  font-size: 0.85rem;
+}
+
+/* Subtle Shimmer Sweep (Breathing cue to tap) */
+.btn-shimmer {
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.28),
+    transparent
+  );
+  transform: skewX(-20deg);
+  animation: shimmerSweep 4s infinite ease-in-out;
+  pointer-events: none;
+}
+
+@keyframes shimmerSweep {
+  0% { left: -100%; }
+  30% { left: 160%; }
+  100% { left: 160%; }
+}
+
+/* Trust Guarantee Below Button */
+.cta-trust-caption {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.68rem;
+  font-weight: 500;
+  color: var(--color-text-sub);
+  margin-top: 5px;
+  white-space: nowrap;
+}
+
+.cta-trust-caption i {
+  color: #10B981;
+  font-size: 0.75rem;
+}
+
+@media (max-height: 720px) {
+  .whatsapp-btn {
+    height: 50px;
+    padding: 0 14px 0 12px;
+  }
+  .btn-label {
+    font-size: 0.88rem;
+  }
+  .btn-subtext {
+    font-size: 0.62rem;
+  }
+  .cta-trust-caption {
+    font-size: 0.62rem;
+    margin-top: 3px;
+  }
+}

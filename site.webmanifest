@@ -1,0 +1,16 @@
+{
+  "name": "What To Wear",
+  "short_name": "What To Wear",
+  "description": "100% Offline, Privacy-First Smart Digital Closet Android App by Navid Satarmaker.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FFFFFF",
+  "theme_color": "#1fa843",
+  "icons": [
+    {
+      "src": "app-logo.png",
+      "sizes": "192x192 512x512",
+      "type": "image/png"
+    }
+  ]
+}
