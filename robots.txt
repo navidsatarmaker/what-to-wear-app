@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://whattowear-app.netlify.app/sitemap.xml
+Sitemap: https://whattowear-closet.netlify.app/sitemap.xml
