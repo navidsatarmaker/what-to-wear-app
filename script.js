@@ -8,50 +8,50 @@ const HEADERS_CONFIG = [
     title: "Organize Your Closet with fluid speed",
     subtitle: "Pinch to zoom between 3 levels - Google Photos style",
     images: [
-      "Home_page.jpg"
+      "Home_page.webp"
     ]
   },
   {
     title: "Bulk Select & tag in second",
     subtitle: "Multi-select outfits directly from gallery",
     images: [
-      "Multi-select.jpg"
+      "Multi-select.webp"
     ]
   },
   {
     title: "On-Device AI/ML color detection",
     subtitle: "Auto-detect dominant color & fabric hex code",
     images: [
-      "color-detection.jpg"
+      "color-detection.webp"
     ]
   },
   {
     title: "Filter Instantly by color & tag",
     subtitle: "One tap to show Black Casual or Pink Forest",
     images: [
-      "Sort-by-color-1.jpg",
-      "Sorty-by-tag-1.jpg",
-      "sort-by-tag-color.jpg"
+      "Sort-by-color-1.webp",
+      "Sorty-by-tag-1.webp",
+      "sort-by-tag-color.webp"
     ]
   },
   {
     title: "Custom wardrobe tags & palettes",
     subtitle: "Add custom tags, color & remain anytime",
     images: [
-      "custom-tag.jpg",
-      "custom-color.jpg"
+      "custom-tag.webp",
+      "custom-color.webp"
     ]
   },
   {
     title: "Separate Closets For Partner / Kids",
     subtitle: "Switch profiles without mixing closets",
     images: [
-      "Multiple Profile-1.jpg",
-      "Multiple-profile-2.jpg",
-      "multi-profile-home-page.jpg",
-      "multi-profile-sort-by-color.jpg",
-      "multi-profile-sort-by-tag.jpg",
-      "multi-profile-sort-by-tag-and-color-1.jpg"
+      "Multiple Profile-1.webp",
+      "Multiple-profile-2.webp",
+      "multi-profile-home-page.webp",
+      "multi-profile-sort-by-color.webp",
+      "multi-profile-sort-by-tag.webp",
+      "multi-profile-sort-by-tag-and-color-1.webp"
     ]
   }
 ];
@@ -88,10 +88,21 @@ function initDeck() {
     card.className = 'phone-mockup-card';
     card.dataset.index = idx;
 
+    const isHero = idx === 0;
+    const isNext = idx === 1 || idx === 2;
+
     card.innerHTML = `
       <div class="camera-punch-hole"></div>
       <div class="screen-content">
-        <img src="${encodeURI(slide.image)}" alt="${slide.headerTitle}" loading="${idx < 3 ? 'eager' : 'lazy'}">
+        <img 
+          src="${encodeURI(slide.image)}" 
+          alt="${slide.headerTitle}" 
+          loading="${isHero || isNext ? 'eager' : 'lazy'}"
+          decoding="async"
+          ${isHero ? 'fetchpriority="high"' : ''}
+          width="640"
+          height="1331"
+        >
       </div>
     `;
 
@@ -108,6 +119,26 @@ function initDeck() {
 
   updateStackPositions();
   updateHeaderText(0, true);
+  preloadRemainingImages();
+}
+
+// Preload remaining deck images in background so transitions never lag
+function preloadRemainingImages() {
+  if ('requestIdleCallback' in window) {
+    requestIdleCallback(() => {
+      SLIDES.slice(3).forEach(slide => {
+        const img = new Image();
+        img.src = encodeURI(slide.image);
+      });
+    });
+  } else {
+    setTimeout(() => {
+      SLIDES.slice(3).forEach(slide => {
+        const img = new Image();
+        img.src = encodeURI(slide.image);
+      });
+    }, 1200);
+  }
 }
 
 // Update card positions in the 3D stack
