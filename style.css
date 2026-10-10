@@ -68,9 +68,20 @@ html, body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 14px 16px;
+  padding: 14px 16px env(safe-area-inset-bottom, 16px);
   overflow: hidden;
   box-shadow: 0 20px 45px rgba(0, 0, 0, 0.12);
+}
+
+/* Hide or push away any automatic Netlify floating badge injection */
+[data-netlify-badge],
+.netlify-badge,
+iframe[src*="netlify"],
+div[style*="position: fixed"][style*="bottom:"] a[href*="netlify.com"],
+div[class*="netlify-badge"] {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
 }
 
 @media (min-height: 860px) and (min-width: 450px) {
