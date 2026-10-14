@@ -551,6 +551,37 @@ div[class*="netlify-badge"] {
   font-size: 0.75rem;
 }
 
+/* Discreet Compliance & Legal Links for Razorpay Verification */
+.footer-legal-links {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.62rem;
+  font-weight: 500;
+  margin-top: 4px;
+  opacity: 0.75;
+  transition: opacity 0.2s ease;
+}
+
+.footer-legal-links:hover {
+  opacity: 1;
+}
+
+.footer-legal-links a {
+  color: var(--color-text-sub);
+  text-decoration: none;
+}
+
+.footer-legal-links a:hover {
+  color: #10B981;
+  text-decoration: underline;
+}
+
+.legal-dot {
+  color: #CBD5E1;
+  font-size: 0.55rem;
+}
+
 @media (max-height: 720px) {
   .whatsapp-btn {
     height: 50px;
@@ -565,5 +596,9 @@ div[class*="netlify-badge"] {
   .cta-trust-caption {
     font-size: 0.62rem;
     margin-top: 3px;
+  }
+  .footer-legal-links {
+    font-size: 0.58rem;
+    margin-top: 2px;
   }
 }
