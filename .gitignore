@@ -3,3 +3,4 @@ node_modules/
 .netlify/
 cloudflare R2 token.txt
 *.txt
+*.csv

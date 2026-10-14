@@ -19,8 +19,8 @@ const HEADERS_CONFIG = [
     ]
   },
   {
-    title: "On-Device AI/ML color detection",
-    subtitle: "Auto-detect dominant color & fabric hex code",
+    title: "Smart Color Tagging & Suggestions",
+    subtitle: "Quick shade suggestions with 1-tap manual edit",
     images: [
       "color-detection.webp"
     ]
@@ -52,6 +52,13 @@ const HEADERS_CONFIG = [
       "multi-profile-sort-by-color.webp",
       "multi-profile-sort-by-tag.webp",
       "multi-profile-sort-by-tag-and-color-1.webp"
+    ]
+  },
+  {
+    title: "Wardrobe Insights & 100% Offline Backup",
+    subtitle: "Total clothes count, color stats, and private backup",
+    images: [
+      "about_dialog.webp"
     ]
   }
 ];
