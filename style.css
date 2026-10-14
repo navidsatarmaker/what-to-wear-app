@@ -189,8 +189,8 @@ div[class*="netlify-badge"] {
 
 .deck-wrapper {
   position: relative;
-  height: 96%; /* Dynamically fills the space between header and branding */
-  max-height: 550px;
+  height: 93%; /* Gives comfortable breathing space to footer elements below */
+  max-height: 515px;
   aspect-ratio: 284 / 573; /* Locks exact 284x573 Figma proportion perfectly */
   cursor: pointer;
   user-select: none;
@@ -344,13 +344,13 @@ div[class*="netlify-badge"] {
   justify-content: center;
   flex-shrink: 0;
   margin-top: 6px;
-  margin-bottom: 8px;
+  margin-bottom: 12px;
   z-index: 10;
 }
 
 .brand-icon-box {
-  width: 32px;
-  height: 32px;
+  width: 30px;
+  height: 30px;
   border-radius: 8px;
   margin-bottom: 3px;
   overflow: hidden;
@@ -373,10 +373,10 @@ div[class*="netlify-badge"] {
 }
 
 .brand-creator {
-  font-size: 0.75rem;
-  font-weight: 400;
+  font-size: 0.74rem;
+  font-weight: 500;
   color: var(--color-text-sub);
-  margin-top: 1px;
+  margin-top: 2px;
 }
 
 .heart-symbol {
@@ -394,13 +394,13 @@ div[class*="netlify-badge"] {
   z-index: 20;
 }
 
-/* High-Converting Polished CTA Button (High Contrast Deep WhatsApp Green) */
+/* High-Converting Polished CTA Button (CSS Grid: Exact Vertical & Horizontal Centering) */
 .whatsapp-btn {
   position: relative;
-  display: flex;
+  display: grid;
+  grid-template-columns: 26px 1fr auto;
   align-items: center;
-  justify-content: space-between;
-  width: 90%;
+  width: 92%;
   max-width: 360px;
   height: 56px;
   background: linear-gradient(135deg, #1fa843 0%, #168e37 100%);
@@ -410,9 +410,13 @@ div[class*="netlify-badge"] {
     0 8px 24px -2px rgba(22, 142, 55, 0.45),
     inset 0 1px 1px rgba(255, 255, 255, 0.35);
   transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease;
-  padding: 0 12px 0 14px;
+  padding: 0 14px 0 16px;
   overflow: hidden;
-  gap: 8px;
+  gap: 10px;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  outline: none;
 }
 
 .whatsapp-btn:hover {
@@ -426,19 +430,13 @@ div[class*="netlify-badge"] {
 }
 
 .btn-left {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex: 1;
-  min-width: 0;
-  height: 100%;
+  display: contents; /* Flattens icon & text directly into the grid columns */
 }
 
 .btn-wa-icon {
   font-size: 1.55rem;
   color: #FFFFFF;
   filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.35));
-  flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -449,23 +447,21 @@ div[class*="netlify-badge"] {
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
-  flex: 1;
   min-width: 0;
   overflow: hidden;
-  height: 100%;
+  line-height: 1;
+  text-align: left;
 }
 
 .btn-label {
-  font-size: 0.94rem;
+  font-size: 0.95rem;
   font-weight: 800;
   color: #FFFFFF;
   letter-spacing: -0.015em;
   white-space: nowrap;
-  line-height: 1.1;
+  line-height: 1.15;
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
   display: block;
-  margin: 0;
-  padding: 0;
 }
 
 .btn-subtext {
@@ -474,26 +470,26 @@ div[class*="netlify-badge"] {
   color: #DCFCE7;
   white-space: nowrap;
   letter-spacing: -0.005em;
-  line-height: 1.1;
+  line-height: 1.15;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
   overflow: hidden;
   text-overflow: ellipsis;
   width: 100%;
   display: block;
-  margin: 2px 0 0 0;
-  padding: 0;
+  margin-top: 2px;
 }
 
 /* Value Anchor Badge (₹49 vs ₹199) - Always protected flex-shrink: 0 */
 .btn-pricing-badge {
   display: flex;
-  align-items: baseline;
-  gap: 4px;
-  background: rgba(0, 0, 0, 0.32);
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  background: rgba(0, 0, 0, 0.35);
   border: 1px solid rgba(255, 255, 255, 0.25);
-  padding: 4px 9px;
+  padding: 5px 11px;
   border-radius: 9999px;
-  flex-shrink: 0; /* Never allow to shrink or be overlapped */
+  flex-shrink: 0;
   z-index: 5;
 }
 
@@ -510,7 +506,7 @@ div[class*="netlify-badge"] {
 }
 
 .btn-current-price {
-  font-size: 0.98rem;
+  font-size: 1rem;
   font-weight: 800;
   color: #FFFFFF;
   display: inline-flex;
@@ -550,27 +546,27 @@ div[class*="netlify-badge"] {
 .cta-trust-caption {
   display: inline-flex;
   align-items: center;
-  gap: 5px;
-  font-size: 0.68rem;
+  gap: 6px;
+  font-size: 0.70rem;
   font-weight: 500;
   color: var(--color-text-sub);
-  margin-top: 5px;
+  margin-top: 10px;
   white-space: nowrap;
 }
 
 .cta-trust-caption i {
   color: #10B981;
-  font-size: 0.75rem;
+  font-size: 0.78rem;
 }
 
 /* Discreet Compliance & Legal Links for Razorpay Verification */
 .footer-legal-links {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  font-size: 0.62rem;
+  gap: 8px;
+  font-size: 0.65rem;
   font-weight: 500;
-  margin-top: 4px;
+  margin-top: 8px;
   opacity: 0.75;
   transition: opacity 0.2s ease;
 }
@@ -596,24 +592,27 @@ div[class*="netlify-badge"] {
 
 @media (max-height: 720px) {
   .whatsapp-btn {
-    height: 50px;
-    padding: 0 12px 0 12px;
+    height: 52px;
+    padding: 0 12px 0 14px;
+    gap: 8px;
   }
   .btn-label {
     font-size: 0.88rem;
-    line-height: 1.15;
   }
   .btn-subtext {
     font-size: 0.62rem;
-    line-height: 1.15;
+  }
+  .brand-section {
+    margin-top: 2px;
+    margin-bottom: 8px;
   }
   .cta-trust-caption {
-    font-size: 0.62rem;
-    margin-top: 3px;
+    font-size: 0.64rem;
+    margin-top: 6px;
   }
   .footer-legal-links {
-    font-size: 0.58rem;
-    margin-top: 2px;
+    font-size: 0.60rem;
+    margin-top: 5px;
   }
 }
 
