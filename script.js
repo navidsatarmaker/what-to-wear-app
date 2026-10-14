@@ -293,4 +293,151 @@ deckWrapper.addEventListener('mouseleave', startAutoCycle);
 document.addEventListener('DOMContentLoaded', () => {
   initDeck();
   startAutoCycle();
+  setupCheckoutHandler();
 });
+
+/* ==========================================================================
+   RAZORPAY IN-PAGE CHECKOUT & SECURE EXPIRING DOWNLOAD MODAL
+   ========================================================================== */
+function setupCheckoutHandler() {
+  const buyBtn = document.getElementById('buyApkBtn');
+  const btnIcon = document.getElementById('btnIcon');
+  const btnMainLabel = document.getElementById('btnMainLabel');
+  const btnSubLabel = document.getElementById('btnSubLabel');
+
+  const downloadModal = document.getElementById('downloadModal');
+  const modalDownloadBtn = document.getElementById('modalDownloadBtn');
+  const timerCountdown = document.getElementById('timerCountdown');
+
+  if (!buyBtn) return;
+
+  buyBtn.addEventListener('click', async () => {
+    // 1. Loading State on Button
+    buyBtn.disabled = true;
+    const origIconClass = btnIcon.className;
+    btnIcon.className = 'ph-bold ph-spinner ph-spin btn-wa-icon';
+    btnMainLabel.textContent = 'Opening Secure Checkout...';
+    btnSubLabel.textContent = 'Please wait a moment';
+
+    try {
+      // 2. Request new order from Netlify serverless function
+      const orderRes = await fetch('/.netlify/functions/create-order', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' }
+      });
+
+      if (!orderRes.ok) {
+        throw new Error('Unable to create order. Please try again.');
+      }
+
+      const orderData = await orderRes.json();
+
+      // 3. Configure Razorpay Standard Modal
+      const options = {
+        key: orderData.keyId,
+        amount: orderData.amount,
+        currency: orderData.currency,
+        name: 'What To Wear',
+        description: 'Smart Wardrobe & Outfit Organizer APK',
+        image: 'https://whattowear-closet.netlify.app/app-logo.png',
+        order_id: orderData.orderId,
+        theme: {
+          color: '#10B981'
+        },
+        modal: {
+          ondismiss: function () {
+            resetButtonState();
+          }
+        },
+        handler: async function (response) {
+          // 4. Payment Completed -> Verify & deliver APK
+          btnMainLabel.textContent = 'Verifying Payment...';
+          btnSubLabel.textContent = 'Preparing secure download link';
+
+          try {
+            const verifyRes = await fetch('/.netlify/functions/verify-and-download', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                razorpay_order_id: response.razorpay_order_id,
+                razorpay_payment_id: response.razorpay_payment_id,
+                razorpay_signature: response.razorpay_signature
+              })
+            });
+
+            const verifyData = await verifyRes.json();
+
+            if (verifyRes.ok && verifyData.downloadUrl) {
+              // 5. Open In-Page Download Screen & Auto-start Download
+              openDownloadModal(verifyData.downloadUrl, verifyData.expiresInMinutes || 45);
+            } else {
+              alert('Payment received, but failed to generate download link: ' + (verifyData.error || 'Unknown error'));
+            }
+          } catch (err) {
+            console.error('Verification error:', err);
+            alert('Verification encountered an issue. Please contact support via WhatsApp with your Payment ID: ' + response.razorpay_payment_id);
+          } finally {
+            resetButtonState();
+          }
+        }
+      };
+
+      const rzp = new Razorpay(options);
+      rzp.on('payment.failed', function (failRes) {
+        resetButtonState();
+        alert('Payment was not completed: ' + (failRes.error.description || 'Cancelled'));
+      });
+
+      rzp.open();
+    } catch (err) {
+      console.error('Checkout error:', err);
+      // Fallback: If server function isn't configured yet, redirect to WhatsApp fallback
+      if (confirm('Direct checkout is being finalized. Would you like to buy directly via WhatsApp for ₹49?')) {
+        window.open('https://wa.me/919028873186?text=Hi%20Navid%2C%20I%20want%20to%20get%20the%20What%20To%20Wear%20app%20(%E2%82%B949)!', '_blank');
+      }
+      resetButtonState();
+    }
+  });
+
+  function resetButtonState() {
+    buyBtn.disabled = false;
+    btnIcon.className = 'ph-bold ph-lightning btn-wa-icon';
+    btnMainLabel.textContent = 'Buy APK via UPI';
+    btnSubLabel.textContent = 'Direct Download • Safe Verified APK';
+  }
+
+  // Handle Download Modal & Countdown Timer
+  let countdownInterval = null;
+  function openDownloadModal(url, minutes) {
+    downloadModal.style.display = 'flex';
+    modalDownloadBtn.href = url;
+
+    // Trigger immediate automatic browser download
+    const autoLink = document.createElement('a');
+    autoLink.href = url;
+    autoLink.download = 'WhatToWear.apk';
+    document.body.appendChild(autoLink);
+    autoLink.click();
+    document.body.removeChild(autoLink);
+
+    // 45:00 countdown timer
+    let totalSeconds = minutes * 60;
+    if (countdownInterval) clearInterval(countdownInterval);
+
+    countdownInterval = setInterval(() => {
+      totalSeconds--;
+      if (totalSeconds <= 0) {
+        clearInterval(countdownInterval);
+        timerCountdown.textContent = 'Expired';
+        modalDownloadBtn.classList.add('disabled');
+        modalDownloadBtn.removeAttribute('href');
+        modalDownloadBtn.innerHTML = '<i class="ph-bold ph-x-circle"></i><span>Download Link Expired</span>';
+        return;
+      }
+
+      const m = Math.floor(totalSeconds / 60).toString().padStart(2, '0');
+      const s = (totalSeconds % 60).toString().padStart(2, '0');
+      timerCountdown.textContent = `${m}:${s}`;
+    }, 1000);
+  }
+}

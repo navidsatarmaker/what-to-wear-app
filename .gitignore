@@ -1,3 +1,5 @@
-
+node_modules/
+.env
+.netlify/
 cloudflare R2 token.txt
 *.txt

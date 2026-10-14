@@ -118,19 +118,18 @@
 
       <!-- HIGH-CONVERSION CTA FOOTER SECTION -->
       <footer class="footer-section">
-        <a 
-          href="https://wa.me/919028873186?text=Hi%20Navid%2C%20I%20want%20to%20get%20the%20What%20To%20Wear%20app%20(%E2%82%B949)!" 
-          target="_blank" 
-          rel="noopener noreferrer" 
+        <button 
+          id="buyApkBtn"
+          type="button"
           class="whatsapp-btn"
         >
           <div class="btn-shimmer"></div>
           
           <div class="btn-left">
-            <i class="ph-bold ph-whatsapp-logo btn-wa-icon"></i>
+            <i class="ph-bold ph-lightning btn-wa-icon" id="btnIcon"></i>
             <div class="btn-text-group">
-              <span class="btn-label">Get What To Wear</span>
-              <span class="btn-subtext">Direct from Navid • Safe APK</span>
+              <span class="btn-label" id="btnMainLabel">Buy APK via UPI</span>
+              <span class="btn-subtext" id="btnSubLabel">Direct Download • Safe Verified APK</span>
             </div>
           </div>
 
@@ -138,11 +137,11 @@
             <span class="btn-old-price"><i class="ph-bold ph-currency-inr"></i>199</span>
             <span class="btn-current-price"><i class="ph-bold ph-currency-inr"></i>49</span>
           </div>
-        </a>
+        </button>
 
         <div class="cta-trust-caption">
           <i class="ph-fill ph-check-circle"></i>
-          <span>Direct Developer Support • Safe & 100% Offline • Lifetime APK</span>
+          <span>Instant Download • 100% Offline • Lifetime Access</span>
         </div>
 
         <!-- Razorpay Compliance & Consumer Protection Links -->
@@ -160,6 +159,33 @@
     </div>
   </div>
 
+  <!-- IN-PAGE SUCCESS & DOWNLOAD MODAL -->
+  <div class="download-modal-backdrop" id="downloadModal" style="display: none;">
+    <div class="download-modal-card">
+      <div class="modal-success-badge">
+        <i class="ph-fill ph-check-circle"></i>
+      </div>
+      <h3 class="modal-title">Payment Successful!</h3>
+      <p class="modal-desc">Thank you for supporting What To Wear. Your verified APK is ready to download.</p>
+      
+      <a href="#" id="modalDownloadBtn" class="modal-download-btn">
+        <i class="ph-bold ph-download-simple"></i>
+        <span>Download WhatToWear.apk (33MB)</span>
+      </a>
+
+      <div class="modal-timer">
+        <i class="ph-bold ph-clock"></i>
+        <span>Download link active for <strong id="timerCountdown">45:00</strong></span>
+      </div>
+
+      <div class="modal-support-note">
+        Need installation help? WhatsApp: <a href="https://wa.me/919028873186" target="_blank">+91 90288 73186</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Official Razorpay Checkout Script -->
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
