@@ -402,8 +402,8 @@ function setupCheckoutHandler() {
   function resetButtonState() {
     buyBtn.disabled = false;
     btnIcon.className = 'ph-bold ph-lightning btn-wa-icon';
-    btnMainLabel.textContent = 'Buy APK via UPI';
-    btnSubLabel.textContent = 'Direct Download • Safe Verified APK';
+    btnMainLabel.textContent = 'Get What To Wear';
+    btnSubLabel.textContent = 'Instant Download • Pay via UPI';
   }
 
   // Handle Download Modal & Countdown Timer
