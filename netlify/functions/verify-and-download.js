@@ -47,7 +47,7 @@ exports.handler = async (event) => {
     const r2AccessKeyId = process.env.R2_ACCESS_KEY_ID;
     const r2SecretAccessKey = process.env.R2_SECRET_ACCESS_KEY;
     const r2BucketName = process.env.R2_BUCKET_NAME || 'navid';
-    const r2FileKey = process.env.R2_FILE_KEY || 'WhatToWear.apk';
+    const r2FileKey = process.env.R2_FILE_KEY || 'what-to-wear-release.apk';
 
     if (!r2Endpoint || !r2AccessKeyId || !r2SecretAccessKey) {
       console.error('Cloudflare R2 configuration missing');
