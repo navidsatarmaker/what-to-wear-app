@@ -26,9 +26,9 @@ exports.handler = async (event) => {
       key_secret: keySecret
     });
 
-    // ₹49 INR in paise (1 INR = 100 paise)
+    // ₹1 INR in paise (1 INR = 100 paise) - TEMPORARY TEST
     const options = {
-      amount: 4900,
+      amount: 100,
       currency: 'INR',
       receipt: `w2w_${Date.now()}`,
       notes: {
